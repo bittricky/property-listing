@@ -1,27 +1,14 @@
 import express from "express";
-import { listings } from "./listings";
+import { ApolloServer } from "apollo-server-express";
+import { schema } from "./graphql";
 
 const app = express();
 const port = 9000;
+const server = new ApolloServer({ schema });
 
-app.use(express.json());
-
-app.get("/listings", (_req, res) => {
-  return res.send(listings);
+server.start().then(() => {
+  server.applyMiddleware({ app, path: "/api" });
+  app.listen(port);
 });
-
-app.post("/delete-listing", (req, res) => {
-  const id: string = req.body.id;
-
-  for (let i = 0; i < listings.length; i++) {
-    if (listings[i].id === id) {
-      return res.send(listings.splice(i, 1));
-    }
-  }
-
-  return res.send("Failed: Listings was not able to be deleted");
-});
-
-app.listen(port);
 
 console.log(`[app]: http://localhost:${port}`);
