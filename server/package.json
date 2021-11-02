@@ -1,10 +1,10 @@
 {
-  "name": "property-listing",
+  "name": "property-listing-server",
   "version": "0.1.0",
   "description": "",
-  "main": "server/src/index.ts",
+  "main": "./src/index.ts",
   "scripts": {
-    "start": "nodemon server/src/index.ts",
+    "start": "nodemon ./src/index.ts",
     "build": "tsc -p ./",
     "seed": "ts-node temp/seed.ts"
   },
