@@ -18,7 +18,7 @@ const mount = async (app: Application) => {
     server.applyMiddleware({ app, path: "/api" });
     app.listen(process.env.PORT);
   });
-  console.log(await db.listings.find({}).toArray());
+
   console.log(`[app]: http://localhost:${process.env.PORT}`);
 };
 
