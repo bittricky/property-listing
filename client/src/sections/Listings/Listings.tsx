@@ -1,9 +1,8 @@
-import React, { FC, useState, useEffect } from "react";
-import { server } from "../../lib/api";
+import { FC } from "react";
+import { server, useQuery } from "../../lib/api";
 import {
   DeleteListingData,
   DeleteListingVariables,
-  Listing,
   ListingsData,
 } from "./types";
 
@@ -35,20 +34,8 @@ interface Props {
   title: string;
 }
 
-export const Listings: FC<Props> = ({ title, children }) => {
-  const [listings, setListings] = useState<Listing[] | null>(null);
-
-  useEffect(() => {
-    fetchListings();
-  }, []);
-
-  const fetchListings = async () => {
-    const { data } = await server.fetch<ListingsData>({
-      query: LISTINGS,
-    });
-
-    setListings(data.listings);
-  };
+export const Listings: FC<Props> = ({ title }) => {
+  const { data, loading, error, refetch } = useQuery<ListingsData>(LISTINGS);
 
   const deleteListings = async (id: string) => {
     await server.fetch<DeleteListingData, DeleteListingVariables>({
@@ -57,8 +44,11 @@ export const Listings: FC<Props> = ({ title, children }) => {
         id,
       },
     });
-    fetchListings();
+
+    refetch();
   };
+
+  const listings = data ? data?.listings : null;
 
   const list = listings ? (
     <ul>
@@ -75,11 +65,18 @@ export const Listings: FC<Props> = ({ title, children }) => {
     </ul>
   ) : null;
 
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+    return <h2>Something went wrong - please try again</h2>;
+  }
+
   return (
     <div>
-      {list}
       <h2>{title}</h2>
-      <button onClick={fetchListings}>Query Listings!</button>
+      {list}
     </div>
   );
 };
