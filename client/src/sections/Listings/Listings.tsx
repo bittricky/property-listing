@@ -43,7 +43,7 @@ export const Listings: FC<Props> = ({ title }) => {
   ] = useMutation<DeleteListingData, DeleteListingVariables>(DELETE_LISTING);
 
   const handleDeleteListings = async (id: string) => {
-    await deleteListings(id);
+    await deleteListings({ id });
     refetch();
   };
 
