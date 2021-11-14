@@ -4,6 +4,8 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Listings } from "./sections/Listings";
 import reportWebVitals from "./reportWebVitals";
 
+import "./styles/index.css";
+
 const client = new ApolloClient({
   uri: "/api",
   cache: new InMemoryCache(),
