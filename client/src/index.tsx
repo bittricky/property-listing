@@ -1,11 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Listings } from "./sections/Listings";
 import reportWebVitals from "./reportWebVitals";
 
+const client = new ApolloClient({
+  uri: "/api",
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <Listings title="Property Listings" />
+    <ApolloProvider client={client}>
+      <Listings title="Property Listings" />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
